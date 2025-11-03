@@ -4,28 +4,29 @@ import ColorForm from "./Components/ColorForm";
 import { useState } from "react";
 import "./App.css";
 import { uid } from "uid";
+import ConfirmPopup from "./Components/ConfirmPopup";
 
 function App() {
   const [colors, setColors] = useState(initialColors);
+  const [confirmDelete, setConfirmDelete] = useState(null);
 
   function handleAddColor(newColor) {
     const updatedColors = [{ id: uid(), ...newColor }, ...colors];
     setColors(updatedColors);
-    console.log(colors);
   }
 
-  function handleDeleteColor(id) {
-    const isConfirmed = confirm("are you sure?");
-    if (!isConfirmed) {
-      return;
-    }
+  function handleDeleteRequest(id) {
+    setConfirmDelete(id);
+  }
 
-    const updatedColors = colors.filter((color) => color.id !== id);
+  function onConfirmDeleteColor() {
+    const updatedColors = colors.filter((color) => color.id !== confirmDelete);
     setColors(updatedColors);
+    setConfirmDelete(null);
   }
 
-  if (colors.length === 0) {
-    return <h2>Add some cards?</h2>;
+  function onCancelDeleteColor() {
+    setConfirmDelete(null);
   }
 
   return (
@@ -33,15 +34,26 @@ function App() {
       <h1>Theme Creator</h1>
       <ColorForm onAddColor={handleAddColor} />
 
-      {colors.map((color) => {
-        return (
-          <Color
-            key={color.id}
-            color={color}
-            onDeleteColor={handleDeleteColor}
-          />
-        );
-      })}
+      {colors.length === 0 ? (
+        <h2>add a color?</h2>
+      ) : (
+        colors.map((color) => {
+          return (
+            <Color
+              key={color.id}
+              color={color}
+              onDeleteColor={handleDeleteRequest}
+            />
+          );
+        })
+      )}
+
+      {confirmDelete && (
+        <ConfirmPopup
+          onConfirm={onConfirmDeleteColor}
+          onDelete={onCancelDeleteColor}
+        />
+      )}
     </>
   );
 }
