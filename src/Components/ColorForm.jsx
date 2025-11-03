@@ -16,8 +16,8 @@ export default function ColorForm({ onAddColor }) {
         <input type="text" name="role" defaultValue="some color"></input>
         <label htmlFor="hex">Hex</label>
         <ColorInput name="hex" defaultValue="#ff4a11" />
-        <label htmlFor="contrast">Contrast Text</label>
-        <ColorInput name="contrast" defaultValue="#ffffff" />
+        <label htmlFor="contrastText">Contrast Text</label>
+        <ColorInput name="contrastText" defaultValue="#ffffff" />
         <input type="submit" value="ADD COLOR"></input>
       </form>
     </>
