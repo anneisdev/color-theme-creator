@@ -9,8 +9,19 @@ function App() {
   const [colors, setColors] = useState(initialColors);
 
   function handleAddColor(newColor) {
-    setColors([{ id: uid(), ...newColor }, ...colors]);
+    const updatedColors = [{ id: uid(), ...newColor }, ...colors];
+    setColors(updatedColors);
     console.log(colors);
+  }
+
+  function handleDeleteColor(id) {
+    const isConfirmed = confirm("are you sure?");
+    if (!isConfirmed) {
+      return;
+    }
+
+    const updatedColors = colors.filter((color) => color.id !== id);
+    setColors(updatedColors);
   }
 
   return (
@@ -19,7 +30,13 @@ function App() {
       <ColorForm onAddColor={handleAddColor} />
 
       {colors.map((color) => {
-        return <Color key={color.id} color={color} />;
+        return (
+          <Color
+            key={color.id}
+            color={color}
+            onDeleteColor={handleDeleteColor}
+          />
+        );
       })}
     </>
   );

@@ -1,6 +1,11 @@
+import Button from "../Button";
 import "./Color.css";
 
-export default function Color({ color }) {
+export default function Color({ color, onDeleteColor }) {
+  function handleDelte() {
+    onDeleteColor(color.id);
+  }
+
   return (
     <div
       className="color-card"
@@ -12,6 +17,7 @@ export default function Color({ color }) {
       <h3 className="color-card-headline">{color.hex}</h3>
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
+      <Button onClick={handleDelte}>DELETE</Button>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import Button from "./Button";
 import ColorInput from "./ColorInput";
 
 export default function ColorForm({ onAddColor }) {
@@ -18,7 +19,7 @@ export default function ColorForm({ onAddColor }) {
         <ColorInput name="hex" defaultValue="#ff4a11" />
         <label htmlFor="contrastText">Contrast Text</label>
         <ColorInput name="contrastText" defaultValue="#ffffff" />
-        <input type="submit" value="ADD COLOR"></input>
+        <Button type="submit">ADD COLOR</Button>
       </form>
     </>
   );
