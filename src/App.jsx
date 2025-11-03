@@ -24,6 +24,10 @@ function App() {
     setColors(updatedColors);
   }
 
+  if (colors.length === 0) {
+    return <h2>Add some cards?</h2>;
+  }
+
   return (
     <>
       <h1>Theme Creator</h1>
