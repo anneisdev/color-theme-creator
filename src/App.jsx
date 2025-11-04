@@ -5,9 +5,12 @@ import { useState } from "react";
 import "./App.css";
 import { uid } from "uid";
 import ConfirmPopup from "./Components/ConfirmPopup";
+import useLocalStorageState from "use-local-storage-state";
 
 function App() {
-  const [colors, setColors] = useState(initialColors);
+  const [colors, setColors] = useLocalStorageState("colors", {
+    defaultValue: initialColors,
+  });
   const [toDelete, setToDelete] = useState(null);
   const [toEdit, setToEdit] = useState(null);
 

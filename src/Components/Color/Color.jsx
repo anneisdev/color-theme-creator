@@ -33,8 +33,8 @@ export default function Color({
       {isEditing && (
         <ColorForm
           originalColor={color}
-          onConfirm={onConfirmEdit}
-          onCancel={onCancelEdit}
+          onConfirmEdit={onConfirmEdit}
+          onCancelEdit={onCancelEdit}
         />
       )}
     </div>
