@@ -1,10 +1,20 @@
 import Button from "../Button";
+import ColorForm from "../ColorForm";
 import "./Color.css";
 
-export default function Color({ color, onDeleteColor, onEditColor }) {
+export default function Color({
+  color,
+  onDeleteColor,
+  onEditColor,
+  toEdit,
+  onConfirmEdit,
+  onCancelEdit,
+}) {
   function getDeleteFunction() {
     onDeleteColor(color.id);
   }
+
+  const isEditing = toEdit?.id === color.id;
 
   return (
     <div
@@ -19,6 +29,14 @@ export default function Color({ color, onDeleteColor, onEditColor }) {
       <p>contrast: {color.contrastText}</p>
       <Button onClick={getDeleteFunction}>DELETE</Button>
       <Button onClick={() => onEditColor(color)}>EDIT</Button>
+
+      {isEditing && (
+        <ColorForm
+          originalColor={color}
+          onConfirm={onConfirmEdit}
+          onCancel={onCancelEdit}
+        />
+      )}
     </div>
   );
 }

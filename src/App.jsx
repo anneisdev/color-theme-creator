@@ -61,6 +61,9 @@ function App() {
               color={color}
               onDeleteColor={handleDeleteRequest}
               onEditColor={() => handleEditRequest(color)}
+              toEdit={toEdit}
+              onConfirmEdit={onConfirmEditColor}
+              onCancelEdit={onCancelEditColor}
             />
           );
         })
@@ -69,13 +72,6 @@ function App() {
         <ConfirmPopup
           onConfirm={onConfirmDeleteColor}
           onDelete={onCancelDeleteColor}
-        />
-      )}
-      {toEdit && (
-        <ColorForm
-          originalColor={toEdit}
-          onConfirmEdit={onConfirmEditColor}
-          onCancelEdit={onCancelEditColor}
         />
       )}
     </>
