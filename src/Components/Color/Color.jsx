@@ -1,5 +1,6 @@
 import Button from "../Button";
 import ColorForm from "../ColorForm";
+import CopyToClipboard from "../CopyToClipboard";
 import "./Color.css";
 
 export default function Color({
@@ -25,6 +26,7 @@ export default function Color({
       }}
     >
       <h3 className="color-card-headline">{color.hex}</h3>
+      <CopyToClipboard hex={color.hex}></CopyToClipboard>
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
       <Button onClick={getDeleteFunction}>DELETE</Button>
