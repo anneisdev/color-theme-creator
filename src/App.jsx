@@ -8,7 +8,8 @@ import ConfirmPopup from "./Components/ConfirmPopup";
 
 function App() {
   const [colors, setColors] = useState(initialColors);
-  const [confirmDelete, setConfirmDelete] = useState(null);
+  const [toDelete, setToDelete] = useState(null);
+  const [toEdit, setToEdit] = useState(null);
 
   function handleAddColor(newColor) {
     const updatedColors = [{ id: uid(), ...newColor }, ...colors];
@@ -16,17 +17,33 @@ function App() {
   }
 
   function handleDeleteRequest(id) {
-    setConfirmDelete(id);
+    setToDelete(id);
   }
 
   function onConfirmDeleteColor() {
-    const updatedColors = colors.filter((color) => color.id !== confirmDelete);
+    const updatedColors = colors.filter((color) => color.id !== toDelete);
     setColors(updatedColors);
-    setConfirmDelete(null);
+    setToDelete(null);
   }
 
-  function onCancelDeleteColor() {
-    setConfirmDelete(null);
+  function onCancelDeleteColor(color) {
+    setToDelete(color);
+  }
+
+  function handleEditRequest(color) {
+    setToEdit(color);
+  }
+
+  function onConfirmEditColor(updatedColor) {
+    const updatedColors = colors.map((color) =>
+      color.id === updatedColor.id ? updatedColor : color
+    );
+    setColors(updatedColors);
+    setToEdit(null);
+  }
+
+  function onCancelEditColor() {
+    setToEdit(null);
   }
 
   return (
@@ -43,15 +60,22 @@ function App() {
               key={color.id}
               color={color}
               onDeleteColor={handleDeleteRequest}
+              onEditColor={() => handleEditRequest(color)}
             />
           );
         })
       )}
-
-      {confirmDelete && (
+      {toDelete && (
         <ConfirmPopup
           onConfirm={onConfirmDeleteColor}
           onDelete={onCancelDeleteColor}
+        />
+      )}
+      {toEdit && (
+        <ColorForm
+          originalColor={toEdit}
+          onConfirmEdit={onConfirmEditColor}
+          onCancelEdit={onCancelEditColor}
         />
       )}
     </>

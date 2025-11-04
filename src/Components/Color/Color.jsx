@@ -1,8 +1,8 @@
 import Button from "../Button";
 import "./Color.css";
 
-export default function Color({ color, onDeleteColor }) {
-  function setDeleteFunction() {
+export default function Color({ color, onDeleteColor, onEditColor }) {
+  function getDeleteFunction() {
     onDeleteColor(color.id);
   }
 
@@ -17,7 +17,8 @@ export default function Color({ color, onDeleteColor }) {
       <h3 className="color-card-headline">{color.hex}</h3>
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
-      <Button onClick={setDeleteFunction}>DELETE</Button>
+      <Button onClick={getDeleteFunction}>DELETE</Button>
+      <Button onClick={() => onEditColor(color)}>EDIT</Button>
     </div>
   );
 }
