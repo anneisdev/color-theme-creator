@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Button from "../Button";
 import ColorForm from "../ColorForm";
 import CopyToClipboard from "../CopyToClipboard";
@@ -10,12 +11,23 @@ export default function Color({
   toEdit,
   onConfirmEdit,
   onCancelEdit,
+  comparison,
 }) {
+  const [apiComparison, setApiComparison] = useState();
+  const isEditing = toEdit?.id === color.id;
+  
   function getDeleteFunction() {
     onDeleteColor(color.id);
   }
 
-  const isEditing = toEdit?.id === color.id;
+  useEffect(() => {
+    async function fetchComparison() {
+      const result = await comparison(color);
+      setApiComparison(result.overall);
+    }
+
+    fetchComparison();
+  }, [color, comparison]);
 
   return (
     <div
@@ -29,6 +41,7 @@ export default function Color({
       <CopyToClipboard hex={color.hex}></CopyToClipboard>
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
+      <p>Overall Contrast Score: {apiComparison}</p>
       <Button onClick={getDeleteFunction}>DELETE</Button>
       <Button onClick={() => onEditColor(color)}>EDIT</Button>
 

@@ -7,11 +7,6 @@ export default function CopyToClipboard({ hex }) {
   async function handleCopy() {
     await navigator.clipboard.writeText(hex);
     setIsCopied(true);
-    console.log("this hex value is about to be copied");
-    // copy the hex code
-    // await navigator.clipboard.writeText(hex)
-    // button info: "SUCESSFULLY COPIED!"
-    // useffect timeout after 3 seconds
   }
 
   useEffect(() => {
@@ -25,7 +20,7 @@ export default function CopyToClipboard({ hex }) {
   return (
     <>
       <Button onClick={handleCopy}>
-        {isCopied ? "SUCESSFULLY COPIED!" : "COPY"}
+        {isCopied ? "SUCCESSFULLY COPIED!" : "COPY"}
       </Button>
     </>
   );

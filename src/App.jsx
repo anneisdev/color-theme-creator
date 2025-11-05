@@ -11,6 +11,7 @@ function App() {
   const [colors, setColors] = useLocalStorageState("colors", {
     defaultValue: initialColors,
   });
+
   const [toDelete, setToDelete] = useState(null);
   const [toEdit, setToEdit] = useState(null);
 
@@ -23,15 +24,11 @@ function App() {
     setToDelete(id);
   }
 
-  function onConfirmDeleteColor() {
-    const updatedColors = colors.filter((color) => color.id !== toDelete);
-    setColors(updatedColors);
-    setToDelete(null);
-  }
-
-  function onCancelDeleteColor(color) {
-    setToDelete(color);
-  }
+  // function onConfirmDeleteColor() {
+  //   const updatedColors = colors.filter((color) => color.id !== toDelete);
+  //   setColors(updatedColors);
+  //   setToDelete(null);
+  // }
 
   function handleEditRequest(color) {
     setToEdit(color);
@@ -47,6 +44,30 @@ function App() {
 
   function onCancelEditColor() {
     setToEdit(null);
+  }
+
+  // if textcolor copied to clipboard, inserted in form & tectcolor same as hex
+  // SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+  // data returns empty -> json method cant read and crashes?? error loop?
+  // solved: try catch
+  async function handleComparison(color) {
+    try {
+      const response = await fetch(
+        "https://www.aremycolorsaccessible.com/api/are-they",
+        {
+          method: "POST",
+          body: JSON.stringify({ colors: [color.hex, color.contrastText] }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.log("1");
+    }
   }
 
   return (
@@ -67,14 +88,20 @@ function App() {
               toEdit={toEdit}
               onConfirmEdit={onConfirmEditColor}
               onCancelEdit={onCancelEditColor}
+              comparison={handleComparison}
             />
           );
         })
       )}
       {toDelete && (
         <ConfirmPopup
-          onConfirm={onConfirmDeleteColor}
-          onDelete={onCancelDeleteColor}
+          onConfirm={() => {
+            setColors(colors.filter((color) => color.id !== toDelete));
+            setToDelete(null);
+          }}
+          onDelete={() => {
+            setToDelete(null);
+          }}
         />
       )}
     </>
