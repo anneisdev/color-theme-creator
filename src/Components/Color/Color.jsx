@@ -5,21 +5,11 @@ import CopyToClipboard from "../CopyToClipboard/CopyToClipboard";
 import "./Color.css";
 import ConfirmPopup from "../ConfirmPopUp/ConfirmPopup";
 
-
-export default function Color({
-  color,
-  onDeleteRequest,
-  onEditRequest,
-  colorToEdit,
-  colorToDelete,
-  onConfirmDelete,
-  onCancelDelete,
-  onConfirmEdit,
-  onCancelEdit,
-}) {
+export default function Color({ color, onDelete, onEdit }) {
   const [apiComparison, setApiComparison] = useState();
   const [apiError, setApiError] = useState(false);
-  const isEditing = colorToEdit?.id === color.id;
+  const [isEditing, setIsEditing] = useState(false);
+  const [colorToDelete, setColorToDelete] = useState(false);
 
   useEffect(() => {
     async function fetchComparison() {
@@ -62,19 +52,30 @@ export default function Color({
         </p>
       )}
 
-      {colorToDelete?.id === color.id ? (
-        <ConfirmPopup onConfirm={onConfirmDelete} onDelete={onCancelDelete} />
+      {colorToDelete ? (
+        <ConfirmPopup
+          onConfirm={() => {
+            onDelete(color.id);
+            setColorToDelete(false);
+          }}
+          onDelete={() => {
+            setColorToDelete(false);
+          }}
+        />
       ) : (
         <>
-          <Button onClick={() => onDeleteRequest()}>DELETE</Button>
-          <Button onClick={() => onEditRequest(color)}>EDIT</Button>
+          <Button onClick={() => setColorToDelete(true)}>DELETE</Button>
+          <Button onClick={() => setIsEditing(true)}>EDIT</Button>
         </>
       )}
       {isEditing && (
         <ColorForm
           originalColor={color}
-          onConfirmEdit={onConfirmEdit}
-          onCancelEdit={onCancelEdit}
+          onConfirmEdit={(newColor) => {
+            onEdit(newColor);
+            setIsEditing(false);
+          }}
+          onCancelEdit={() => setIsEditing(false)}
         />
       )}
     </div>

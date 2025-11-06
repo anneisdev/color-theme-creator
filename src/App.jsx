@@ -1,7 +1,6 @@
 import { initialColors } from "./lib/colors";
 import Color from "./Components/Color/Color";
 import ColorForm from "./Components/ColorForm/ColorForm";
-import { useState } from "react";
 import "./App.css";
 import { uid } from "uid";
 import useLocalStorageState from "use-local-storage-state";
@@ -11,20 +10,9 @@ function App() {
     defaultValue: initialColors,
   });
 
-  const [colorToDelete, setColorToDelete] = useState(null);
-  const [colorToEdit, setColorToEdit] = useState(null);
-
   function handleAddColor(newColor) {
     const updatedColors = [{ id: uid(), ...newColor }, ...colors];
     setColors(updatedColors);
-  }
-
-  function handleDeleteRequest(color) {
-    setColorToDelete(color);
-  }
-
-  function handleEditRequest(color) {
-    setColorToEdit(color);
   }
 
   return (
@@ -40,7 +28,28 @@ function App() {
             <Color
               key={color.id}
               color={color}
-              onDeleteRequest={() => handleDeleteRequest(color)}
+              onDelete={(id) => {
+                setColors(colors.filter((color) => color.id !== id));
+              }}
+              onEdit={(newColor) => {
+                setColors(
+                  colors.map((color) =>
+                    color.id === newColor.id ? newColor : color
+                  )
+                );
+              }}
+            />
+          );
+        })
+      )}
+    </>
+  );
+}
+
+export default App;
+
+/** 
+onDeleteRequest={() => handleDeleteRequest(color)}
               onEditRequest={() => handleEditRequest(color)}
               colorToEdit={colorToEdit}
               colorToDelete={colorToDelete}
@@ -69,7 +78,4 @@ function App() {
         })
       )}
     </>
-  );
-}
-
-export default App;
+    */
