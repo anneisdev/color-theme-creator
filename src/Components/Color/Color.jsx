@@ -11,6 +11,7 @@ export default function Color({ color, onDelete, onEdit }) {
   const [isEditing, setIsEditing] = useState(false);
   const [colorToDelete, setColorToDelete] = useState(false);
 
+  //error when contrasttext & hex the same
   useEffect(() => {
     async function fetchComparison() {
       try {
