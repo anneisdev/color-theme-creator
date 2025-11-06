@@ -1,33 +1,47 @@
 import { useEffect, useState } from "react";
-import Button from "../Button";
-import ColorForm from "../ColorForm";
-import CopyToClipboard from "../CopyToClipboard";
+import Button from "../Button/Button";
+import ColorForm from "../ColorForm/ColorForm";
+import CopyToClipboard from "../CopyToClipboard/CopyToClipboard";
 import "./Color.css";
+import ConfirmPopup from "../ConfirmPopUp/ConfirmPopup";
+
 
 export default function Color({
   color,
-  onDeleteColor,
-  onEditColor,
-  toEdit,
+  onDeleteRequest,
+  onEditRequest,
+  colorToEdit,
+  colorToDelete,
+  onConfirmDelete,
+  onCancelDelete,
   onConfirmEdit,
   onCancelEdit,
-  comparison,
 }) {
   const [apiComparison, setApiComparison] = useState();
-  const isEditing = toEdit?.id === color.id;
-  
-  function getDeleteFunction() {
-    onDeleteColor(color.id);
-  }
+  const [apiError, setApiError] = useState(false);
+  const isEditing = colorToEdit?.id === color.id;
 
   useEffect(() => {
     async function fetchComparison() {
-      const result = await comparison(color);
-      setApiComparison(result.overall);
+      try {
+        const response = await fetch(
+          "https://www.aremycolorsaccessible.com/api/are-they",
+          {
+            method: "POST",
+            body: JSON.stringify({ colors: [color.hex, color.contrastText] }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        setApiComparison(data.overall);
+      } catch (error) {
+        setApiError(true);
+      }
     }
-
     fetchComparison();
-  }, [color, comparison]);
+  }, [color]);
 
   return (
     <div
@@ -42,9 +56,20 @@ export default function Color({
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
       <p>Overall Contrast Score: {apiComparison}</p>
-      <Button onClick={getDeleteFunction}>DELETE</Button>
-      <Button onClick={() => onEditColor(color)}>EDIT</Button>
+      {apiError && (
+        <p className="color-card-highlight">
+          Error when loading contrast comparison. Choose a new contrast Color
+        </p>
+      )}
 
+      {colorToDelete?.id === color.id ? (
+        <ConfirmPopup onConfirm={onConfirmDelete} onDelete={onCancelDelete} />
+      ) : (
+        <>
+          <Button onClick={() => onDeleteRequest()}>DELETE</Button>
+          <Button onClick={() => onEditRequest(color)}>EDIT</Button>
+        </>
+      )}
       {isEditing && (
         <ColorForm
           originalColor={color}

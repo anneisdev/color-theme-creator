@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Button from "./Button";
+import Button from "../Button/Button";
 
 export default function CopyToClipboard({ hex }) {
   const [isCopied, setIsCopied] = useState(false);

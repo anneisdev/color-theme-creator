@@ -1,5 +1,6 @@
-import Button from "./Button";
-import ColorInput from "./ColorInput";
+import Button from "../Button/Button";
+import ColorInput from "../ColorInput/ColorInput";
+import "./ColorForm.css";
 
 export default function ColorForm({
   onAddColor,
@@ -21,7 +22,7 @@ export default function ColorForm({
 
   return (
     <>
-      <form onSubmit={handleSubmitColor}>
+      <form onSubmit={handleSubmitColor} className="form--container">
         <label htmlFor="role">Role</label>
         <input
           type="text"
