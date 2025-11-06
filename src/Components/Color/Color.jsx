@@ -3,7 +3,7 @@ import Button from "../Button/Button";
 import ColorForm from "../ColorForm/ColorForm";
 import CopyToClipboard from "../CopyToClipboard/CopyToClipboard";
 import "./Color.css";
-import ConfirmPopup from "../ConfirmPopUp/ConfirmPopup";
+import ConfirmPopup from "../ConfirmPopup2/ConfirmPopup";
 
 export default function Color({ color, onDelete, onEdit }) {
   const [apiComparison, setApiComparison] = useState();
@@ -32,7 +32,7 @@ export default function Color({ color, onDelete, onEdit }) {
       }
     }
     fetchComparison();
-  }, [color]);
+  }, [color.hex, color.contrastText]);
 
   return (
     <div

@@ -47,35 +47,3 @@ function App() {
 }
 
 export default App;
-
-/** 
-onDeleteRequest={() => handleDeleteRequest(color)}
-              onEditRequest={() => handleEditRequest(color)}
-              colorToEdit={colorToEdit}
-              colorToDelete={colorToDelete}
-              onConfirmDelete={() => {
-                setColors(
-                  colors.filter((color) => color.id !== colorToDelete.id)
-                );
-                setColorToDelete(null);
-              }}
-              onCancelDelete={() => {
-                setColorToDelete(null);
-              }}
-              onConfirmEdit={(newColor) => {
-                setColors(
-                  colors.map((color) =>
-                    color.id === newColor.id ? newColor : color
-                  )
-                );
-                setColorToEdit(null);
-              }}
-              onCancelEdit={() => {
-                setColorToEdit(null);
-              }}
-            />
-          );
-        })
-      )}
-    </>
-    */
